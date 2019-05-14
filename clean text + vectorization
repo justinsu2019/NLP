@@ -1,0 +1,68 @@
+'''learnt
+#print how much sub-function a function has  print(dir(ps))
+'''
+
+
+
+import re
+import pandas as pd
+import string
+import nltk
+
+
+x = "i've never had such a great time before, 1 whole week, hiking is so amazingly good. I love my wife and she was going together with me, which I feel so good all the time."
+
+ps = nltk.PorterStemmer()
+wn = nltk.WordNetLemmatizer()
+
+def clean_text(text):
+    stopword = nltk.corpus.stopwords.words('english')
+    text_nopunct = "".join([char.lower() for char in text if char not in string.punctuation])
+    tokenized_list = re.split('\W+', text_nopunct)
+    text = [wn.lemmatize(word) for word in tokenized_list if word not in stopword]
+    return text
+
+a = clean_text(x)
+#print(clean_text(x))
+
+
+
+### stemming is faster but too violence, it won't consider the words around it
+'''
+def stemming(clean_text):
+    text = [ps.stem(word) for word in clean_text]
+    return text
+
+print(stemming(clean_text(x)))
+
+
+### lemmatizing will consider the words around the context and try the more accurate one. so it will cost you longer time
+#print(wn.lemmatize('meanness'),wn.lemmatize('meanning'))
+#print(ps.stem('meanness'),ps.stem('meanning'))
+#print(ps.stem('goose'),ps.stem('geese'),wn.lemmatize('goose'),wn.lemmatize('geese'))
+
+def lemmatizing(clean_text):
+    text = [wn.lemmatize(word) for word in clean_text]
+    return text
+
+b = lemmatizing(clean_text(x))
+#print(lemmatizing(clean_text(x)))
+
+#---------------------------------------------------------------------
+'''
+# Vectorized   need to read again
+from sklearn.feature_extraction.text import CountVectorizer
+count_vect = CountVectorizer(analyzer=clean_text)
+X = count_vect.fit_transform(a)
+#print(X.shape, count_vect.get_feature_names())
+#print(count_vect)
+X_counts = pd.DataFrame(X.toarray())
+X_counts.columns = count_vect.get_feature_names()
+
+print(X_counts)
+
+
+
+
+
+

@@ -43,7 +43,7 @@ phrase_pool = []
 print("range len is {}\n".format(range(len(phrase_potential))))
 
 for i in range(len(phrase_potential)):
-    for j in range(i+1,6):
+    for j in range(i+1,len(phrase_potential)):
         for sentence in x:
             print("i,j,sentence are {},{},{}".format(phrase_potential[i], phrase_potential[j], sentence))
             if phrase_potential[i] in sentence and phrase_potential[j] in sentence[i:]:

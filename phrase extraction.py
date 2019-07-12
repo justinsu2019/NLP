@@ -17,27 +17,27 @@ phrase_potential = []
 #1
 for sentence in x:
     [y.append(word) for word in sentence]
-print(y)
+#print(y)
 y_temp = list(set(y))
 y_temp.sort(key = y.index)
-print(y_temp)
+#print(y_temp)
 
-
+# need to update:--------------
 for word_unique in y:
         for sentence in x:
             if word_unique in sentence:
                 appear_times += 1
         #print(appear_times,"\n")
         word_appear_time_dic[word_unique]= appear_times
-        if appear_times > 1:
+        if appear_times > 1 and word_unique not in phrase_potential:
             phrase_potential.append(word_unique)
         appear_times = 0
 
 print("the phrase_potential is {}, and word_appear_time_dic is {}".format(phrase_potential,word_appear_time_dic))   #word_appear_time_dic
 
 
-#2
 
+#2
 phrase_pool = []
 
 print("range len is {}\n".format(range(len(phrase_potential))))
@@ -57,7 +57,10 @@ for word1 in phrase_potential:
         for word3 in phrase_potential[word2:]:
             phrase_pool.append(str(word1)+str(word2)+str(word3))
 '''
+
+
 phrase_pool_unique = list(set(phrase_pool))
+print("phrase_pool_unique is {}".format(phrase_pool_unique))
 
 phrase_final = {}
 
@@ -66,7 +69,6 @@ for i in phrase_pool_unique:
         phrase_final[i]=phrase_pool.count(i)
 print("phrase_final is {}".format(phrase_final))
     
-
 
 '''
 #------------------------- need to update

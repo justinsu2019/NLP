@@ -5,6 +5,7 @@ Function
 3 clean_text， 把句子分成单词方便向量化
 '''
 
+
 import re
 import pandas as pd
 import string
@@ -13,6 +14,10 @@ import numpy as np
 
 # assume x is the input
 x = "i've never had such a great time before, 1 whole week, sleeping, hiking is so amazingly good. I love my wife and she was going together with me, which I feel so good all the time. yoyo, check it out, jianbingguozi lai yi tao, yoyo, how are you, I am so fine and thank you"
+
+
+
+
 
 
 # function 1 ----------------------------------------------------------------------------------------------------
@@ -52,7 +57,7 @@ print("completed")
 '''
 
 
-# function 2 ----------------------------------------------------------------------------------------------------
+# function 2 check below for update ----------------------------------------------------------------------------------------------------
 def create_wordlist_in_sentence(x):
     y = []
     for z in x:
@@ -60,6 +65,18 @@ def create_wordlist_in_sentence(x):
     return y 
 
 #print(create_wordlist_in_sentence(x))
+
+
+
+# function 2  need to test ----------------------------------------------------------------------------------------------------
+def create_wordlist_in_sentence(x):
+    y = []
+    [y.append(z.split(" ")) for z in x:]
+    return y 
+
+#print(create_wordlist_in_sentence(x))
+
+
 
 
 # function 3 ----------------------------------------------------------------------------------------------------
@@ -76,3 +93,43 @@ def clean_text(text):
     return text
 
 #print("Separate the acticle into words, and then it's: \n {} \n".format(clean_text(x)))
+
+
+
+
+
+### stemming is faster but too violence, it won't consider the words around it
+'''
+def stemming(clean_text):
+    text = [ps.stem(word) for word in clean_text]
+    return text
+
+print(stemming(clean_text(x)))
+
+
+### lemmatizing will consider the words around the context and try the more accurate one. so it will cost you longer time
+#print(wn.lemmatize('meanness'),wn.lemmatize('meanning'))
+#print(ps.stem('meanness'),ps.stem('meanning'))
+#print(ps.stem('goose'),ps.stem('geese'),wn.lemmatize('goose'),wn.lemmatize('geese'))
+
+def lemmatizing(clean_text):
+    text = [wn.lemmatize(word) for word in clean_text]
+    return text
+
+b = lemmatizing(clean_text(x))
+#print(lemmatizing(clean_text(x)))
+
+#---------------------------------------------------------------------
+
+# Vectorized   need to read again
+from sklearn.feature_extraction.text import CountVectorizer
+count_vect = CountVectorizer(analyzer=clean_text)
+X = count_vect.fit_transform(a)
+#print(X.shape, count_vect.get_feature_names())
+#print(count_vect)
+X_counts = pd.DataFrame(X.toarray())
+X_counts.columns = count_vect.get_feature_names()
+
+print(X_counts)
+'''
+

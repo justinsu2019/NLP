@@ -1,0 +1,78 @@
+'''
+Function
+1 sparate_acticles_into_sentence, 顾名思义，把文章分成句子
+2 create_wordlist_in_sentence, 循环创建每个句子的单词库
+3 clean_text， 把句子分成单词方便向量化
+'''
+
+import re
+import pandas as pd
+import string
+import nltk
+import numpy as np
+
+# assume x is the input
+x = "i've never had such a great time before, 1 whole week, sleeping, hiking is so amazingly good. I love my wife and she was going together with me, which I feel so good all the time. yoyo, check it out, jianbingguozi lai yi tao, yoyo, how are you, I am so fine and thank you"
+
+
+# function 1 ----------------------------------------------------------------------------------------------------
+def sparate_acticles_into_sentence(x):
+
+    ### clean up the sentences and store them ###
+    # 在切分后，过滤掉split返回的list中的空字符串
+    def not_break(sen):
+        return (sen != '\n' and sen != '\u3000' and  sen != '' and not sen.isspace())
+
+    # filter_data()函数的功能是：对于一个由string组成的list [str1, str2, str3, ......]，过滤掉那些空字符串''、特殊字符串'\n'，并返回过滤后的新list
+    def filter_data(ini_data):
+        # ini_data是由句子组成的string
+        new_data = list(filter(not_break, [data.strip() for data in ini_data]))
+        return new_data
+
+    # define the sparators
+    punc = '|＃|＄|％|＆|＇|（|）|＊|＋|，|－|／|：|；|＜|＝|＞|＠|［|＼|］|＾|＿|｀|｛|｜|｝|～|｟|｠|｢|｣|､|\u3000|、|〃|〈|〉|《|》|「|」|『|』|【|】|〔|〕|〖|〗|〘|〙|〚|〛|〜|〝|〞|〟|〰|〾|〿|–|—|‘|’|‛|“|”|„|‟|…|‧|﹏|﹑|﹔|·|！|？|｡|。!|"|#|$|%|&|\'|(|)|*|+|,|-|.|/|:|;|<|=|>|?|@|[|\\|]|^|_|`|{|||}|~'
+
+    punc = punc[:-6]+punc[-4:] # ！ pick some out, don't know why
+
+    my_stringList = filter_data(re.split(r''+("["+punc+"]"), x))
+    ### clean up the sentences and store them end ###
+
+    y = []
+    [y.append(z) for z in my_stringList]
+    return y
+
+#print("Separate the acticle into sentence, and then it's: \n {} \n".format(sparate_acticles_into_sentence(x)))
+
+'''
+# test how it works
+print("start")
+for x in sparate_acticles_into_sentence(x):
+    print(x)
+print("completed")
+'''
+
+
+# function 2 ----------------------------------------------------------------------------------------------------
+def create_wordlist_in_sentence(x):
+    y = []
+    for z in x:
+        y.append(z.split(" "))
+    return y 
+
+#print(create_wordlist_in_sentence(x))
+
+
+# function 3 ----------------------------------------------------------------------------------------------------
+ps = nltk.PorterStemmer()
+wn = nltk.WordNetLemmatizer()
+
+def clean_text(text):
+    stopword = nltk.corpus.stopwords.words('english')
+    text_nopunct = "".join([char.lower() for char in text if (char.isspace() or char.isalpha()) and (char not in string.punctuation)])
+    #print("text_nopunct is {} \n".format(text_nopunct))
+    tokenized_list = re.split('\W+', text_nopunct)
+    #print("tokenized_list is {} \n".format(tokenized_list))
+    text = [wn.lemmatize(word) for word in tokenized_list if word not in stopword]
+    return text
+
+#print("Separate the acticle into words, and then it's: \n {} \n".format(clean_text(x)))

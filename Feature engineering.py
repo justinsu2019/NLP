@@ -1,12 +1,9 @@
 #what's in here:
 '''
-A- clean up the sentences in an file
-
-B- 3 ways to vertorize:
-1: basic way to check how many times a word appear in a sentence through all the acticle
-2: ngram tell not only 1 word but also multiple words based on your selection
-3: Tf-idf tells how many percentage of a word appear in a sentence, but sure what's the difference of it and the 1st way
-
+1 try to locate the pattern of the data
+2( may not need 2) find what's the difference between the label data and the rest.
+3 transform the data into better pattern to help doing the analyz, such as: square root it
+4 let machine analyzs what's the difference of them.
 '''
 
 from sklearn.feature_extraction.text import CountVectorizer
